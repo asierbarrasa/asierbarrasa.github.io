@@ -1,4 +1,4 @@
-var countDownDate = getNextDayOfWeek(new Date(), 5)
+var countDownDate = getNextDayOfWeek(new Date(), 5);
 
 // Update the count down every 1 second
 var x = setInterval(function() {
@@ -8,6 +8,7 @@ var x = setInterval(function() {
 
   // Find the distance between now and the count down date
   var distance = countDownDate - now;
+console.log(distance);
 
   // Time calculations for days, hours, minutes and seconds
   var days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -22,7 +23,7 @@ var x = setInterval(function() {
   // If the count down is finished, write some text
   if (distance < 0) {
     clearInterval(x);
-    document.getElementById("displayTime").innerHTML = "YA ES VIERNES!@";
+    document.getElementById("displayTime").innerHTML = "YA ES VIERNES!";
   }
 }, 1000);
 
@@ -34,6 +35,8 @@ function getNextDayOfWeek(date, dayOfWeek) {
     var resultDate = new Date(date.getTime());
 
     resultDate.setDate(date.getDate() + (7 + dayOfWeek - date.getDay()) % 7);
-
-    return resultDate;
+    resultDate.setHours(00);
+    resultDate.setMinutes(00);
+      resultDate.setSeconds(01);
+    return resultDate.getTime();
 }
