@@ -17,27 +17,18 @@
 
 <body>
 <div class="container" style=" position: absolute;
-top: 50%;
--webkit-transform: translateY(-50%);
-        transform: translateY(-50%);
+top: 40%;
+-webkit-transform: translateY(-40%);
+        transform: translateY(-40%);
 margin: auto;
-width: 100%;">
-  
+width: 80%;
+margin: 10%;">
+      <h2 class="card-title center" id="displayFriday" style="margin: 10%"><p></p></h2><br>
         <h2 class="card-title center" id="displayTime"></h2>
   
 
 </div>
 
-<script>
-    function getNextDayOfWeek(date, dayOfWeek) {
-    // Code to check that date and dayOfWeek are valid left as an exercise ;)
 
-    var resultDate = new Date(date.getTime());
-
-    resultDate.setDate(date.getDate() + (7 + dayOfWeek - date.getDay()) % 7) + 1;
-
-    return resultDate;
-}
-</script>
 </body>
 </html>

@@ -21,6 +21,10 @@ console.log(distance);
   + minutes + "m " + seconds + "s ";
 
   // If the count down is finished, write some text
+
+  if(days <4 && days >0){
+    document.getElementById("displayTime").innerHTML = "Ya casi es viernes!";
+  }
   if (distance < 0) {
     clearInterval(x);
     document.getElementById("displayTime").innerHTML = "YA ES VIERNES!";
