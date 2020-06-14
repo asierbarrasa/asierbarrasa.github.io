@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="../css/materialize.min.css" media="screen,projection" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="text/javascript" src="../js/materialize.min.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/timer.js"></script>
+
+
+</head>
+
+<body>
+<div class="container" style=" position: absolute;
+top: 50%;
+-webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+margin: auto;
+width: 100%;">
+  
+        <h1 class="card-title center" id="displayTime"></h1>
+  
+
+</div>
+
+<script>
+    function getNextDayOfWeek(date, dayOfWeek) {
+    // Code to check that date and dayOfWeek are valid left as an exercise ;)
+
+    var resultDate = new Date(date.getTime());
+
+    resultDate.setDate(date.getDate() + (7 + dayOfWeek - date.getDay()) % 7) + 1;
+
+    return resultDate;
+}
+</script>
+</body>
+</html>
