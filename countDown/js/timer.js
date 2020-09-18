@@ -8,7 +8,6 @@ var x = setInterval(function() {
 
   // Find the distance between now and the count down date
   var distance = countDownDate - now;
-console.log(distance);
 
   // Time calculations for days, hours, minutes and seconds
   var days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -21,7 +20,6 @@ console.log(distance);
   + minutes + "m " + seconds + "s ";
 
   // If the count down is finished, write some text
-
   if(days <3 && days >=0){
     document.getElementById("displayFriday").innerHTML = "Ya casi es viernes!";
   }
@@ -39,8 +37,8 @@ function getNextDayOfWeek(date, dayOfWeek) {
     var resultDate = new Date(date.getTime());
 
     resultDate.setDate(date.getDate() + (7 + dayOfWeek - date.getDay()) % 7);
-    resultDate.setHours(00);
+    resultDate.setHours(14);
     resultDate.setMinutes(00);
-      resultDate.setSeconds(01);
+    resultDate.setSeconds(01);
     return resultDate.getTime();
 }
