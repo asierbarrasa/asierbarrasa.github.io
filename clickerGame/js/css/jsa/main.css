@@ -1,0 +1,47 @@
+html,body{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Roboto Mono', monospace;
+    font-size: large;
+    background-color: white;
+  }
+
+  .dark-mode{
+    filter: invert(1) hue-rotate(180deg);
+  }
+
+  .invert{
+    filter: invert(1) hue-rotate(180deg);
+  }
+
+  span{
+      font-weight: lighter;
+  }
+
+.txt-center{
+    text-align: center;
+}
+
+.clickArea{
+    border-style: dashed;
+    height: 60vh;
+    overflow: hidden;
+    
+}
+
+.header{
+    height: 20vh;
+    margin-top: 4%;
+}
+
+
+@media (max-width: 576px) {
+    /* CSS that should be displayed if width is equal to or less than 800px goes here */
+#colTimer, #colPoint{
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+  }

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Clicker Game.</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../css/bootstrap-grid.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200;400&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="../js/css/jsa/main.css">
+    <script src="./index.js"></script>   
+
+</head>
+
+<body>
+
+    <div class="header">
+
+        <!-- <div class="container">
+            <div class="row">
+                <div class="col txt-center">
+                    10 segudos.
+                    <br>
+                    Haz todos los clicks que puedas.
+                </div>
+
+            </div>
+        </div> -->
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-sm-6 txt-center" id="colTimer">
+                    Tiempo: <span  id="timer"> 10</span>
+                </div>
+                <div class="col-12 col-lg-6 col-sm-6 txt-center" id="colPoint">
+                    Puntuacion: <span id="count">0</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+        <div class="row">
+            <div class="col-10 offset-1">
+                <div class="clickArea" id="clickEventHandler">
+
+                </div>
+
+            </div>
+
+<script>
+
+    document.onkeypress = function(e){
+        e = e || window.event;
+
+        if (e.keyCode === 13 ) {
+            document.documentElement.classList.toggle('dark-mode');
+            document.querySelectorAll('.inverted').forEach((result) => {
+                result.classList.toggle('ínvert');
+            })
+        }
+    }
+</script>
+</body>
+
+</html>
