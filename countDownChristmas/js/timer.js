@@ -1,4 +1,4 @@
-var countDownDate = new Date(2020,11,25)
+var countDownDate = new Date(2021,11,25)
 
 // Update the count down every 1 second
 var x = setInterval(function() {
@@ -20,12 +20,12 @@ var x = setInterval(function() {
   + minutes + "m " + seconds + "s ";
 
   // If the count down is finished, write some text
-  if(days <3 && days >=0){
-    document.getElementById("displayFriday").innerHTML = "Ya casi es viernes!";
+  if(days <30 && days >=0){
+    document.getElementById("displayFriday").innerHTML = "Ya casi es Navidad!";
   }
   if (distance < 0) {
     clearInterval(x);
-    document.getElementById("displayTime").innerHTML = "YA ES VIERNES!";
+    document.getElementById("displayTime").innerHTML = "YA ES NAVIDAD!";
   }
 }, 1000);
 
