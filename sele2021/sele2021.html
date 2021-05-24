@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
@@ -26,7 +26,7 @@
         <div>
             <h3>Bach</h3> <span id="mediaBach"></span> <span id="mediaBachPonderada"></span>
         </div>
-        <div>Nota 1</div> <span id="mediaPrimero"></span> <input type="text" name="" id="notaPrimero">
+        <div>Nota 1</div> <span id="mediaPrimero"></span> <input type="number" name="" id="notaPrimero">
         <div>Nota 2</div> <span id="MediaSegundo"></span> <input type="text" id="notaSegundo">
         <div>
             <h3>Obligatorias</h3> <span id="mediaObligatorias"></span> <span id="mediaObligatoriasPonderada"></span>
@@ -67,73 +67,73 @@
             <h3>Especificas</h3> <span id="mediaEspecificas"></span>
         </div>
 
-<div>
-<span>Especifica 1</span>  
-<input type="text" value="" id="value1">
+        <div>
+            <span>Especifica 1</span>
+            <input type="text" value="" id="value1">
 
-<select name="" id="select1">
-<option value="0.1">0.1</option>
-<option value="0.2">0.2</option>
-<option value="0.3">0.3</option>
-</select>
-</div>
-
-
-<div><span>Especifica 2</span>  
+            <select name="" id="select1">
+                <option value="0.1">0.1</option>
+                <option value="0.2">0.2</option>
+                <option value="0.3">0.3</option>
+            </select>
+        </div>
 
 
-    <input type="text" value="" id="value2">
+        <div><span>Especifica 2</span>
 
-    <select name="" id="select2">
-    <option value="0.1">0.1</option>
-    <option value="0.2">0.2</option>
-    <option value="0.3">0.3</option>
-    </select></div>
-<div><span>Especifica 3</span>  
-    <input type="text" value="" id="value3">
 
-    <select name="" id="select3">
-    <option value="0.1">0.1</option>
-    <option value="0.2">0.2</option>
-    <option value="0.3">0.3</option>
-    </select></div>
+            <input type="text" value="" id="value2">
+
+            <select name="" id="select2">
+                <option value="0.1">0.1</option>
+                <option value="0.2">0.2</option>
+                <option value="0.3">0.3</option>
+            </select></div>
+        <div><span>Especifica 3</span>
+            <input type="text" value="" id="value3">
+
+            <select name="" id="select3">
+                <option value="0.1">0.1</option>
+                <option value="0.2">0.2</option>
+                <option value="0.3">0.3</option>
+            </select></div>
 
         <input type="button" value="Calcular" id="btnCalcular">
     </div>
 
     <script>
         $("#btnCalcular").click(function () {
-            var notaPrimero = parseFloat($("#notaPrimero").val())
-            var notaSegundo = parseFloat($("#notaSegundo").val())
+            var notaPrimero = parseFloat($("#notaPrimero").val().replace(',','.')) || 0
+            var notaSegundo = parseFloat($("#notaSegundo").val().replace(',','.')) || 0
             var mediaBach = (notaPrimero + notaSegundo) / 2
-            $("#mediaBach").text(mediaBach)
-
-            $("#mediaBachPonderada").text(mediaBach * 0.6)
 
 
 
-            var notaMate = parseFloat($("#valueMate").val())
-            var notaLengua = parseFloat($("#valueLengua").val())
-            var notaIngles = parseFloat($("#valueIngles").val())
-            var notaEuskera = parseFloat($("#valueEuskera").val())
-            var notaHistoria = parseFloat($("#valueHistoria").val())
-            var mediaObligatorias = (notaMate + notaLengua + notaIngles + notaEuskera + notaHistoria)/5
-            $("#mediaObligatorias").text(mediaObligatorias)
-            $("#mediaObligatoriasPonderada").text(mediaObligatorias * 0.4)
+
+            var notaMate = parseFloat($("#valueMate").val().replace(',','.')) || 0
+            var notaLengua = parseFloat($("#valueLengua").val().replace(',','.')) || 0
+            var notaIngles = parseFloat($("#valueIngles").val().replace(',','.')) || 0
+            var notaEuskera = parseFloat($("#valueEuskera").val().replace(',','.')) || 0
+            var notaHistoria = parseFloat($("#valueHistoria").val().replace(',','.')) || 0
+            var mediaObligatorias = (notaMate + notaLengua + notaIngles + notaEuskera + notaHistoria) / 5
 
 
-            var nota1 = parseFloat($("#value1").val()) || 0
-            var nota2 = parseFloat($("#value2").val()) || 0
-            var nota3 = parseFloat($("#value3").val()) || 0
 
-            var ponderacion1 = parseFloat($("#select1").val())
-            var ponderacion2 = parseFloat($("#select2").val())
-            var ponderacion3 = parseFloat($("#select3").val())
+            var nota1 = parseFloat($("#value1").val().replace(',','.')) || 0
+            var nota2 = parseFloat($("#value2").val().replace(',','.')) || 0
+            var nota3 = parseFloat($("#value3").val().replace(',','.')) || 0
+
+            var ponderacion1 = parseFloat($("#select1").val().replace(',','.')) || 0
+            var ponderacion2 = parseFloat($("#select2").val().replace(',','.')) || 0
+            var ponderacion3 = parseFloat($("#select3").val().replace(',','.')) || 0
 
 
 
             var mediaEspecificas = (nota1 * ponderacion1) + (nota2 * ponderacion2) + (nota3 * ponderacion3)
-
+            $("#mediaBach").text(mediaBach)
+            $("#mediaObligatorias").text(mediaObligatorias)
+            $("#mediaObligatoriasPonderada").text(mediaObligatorias * 0.4)
+            $("#mediaBachPonderada").text(mediaBach * 0.6)
             $("#mediaEspecificas").text(mediaEspecificas)
 
             $("#mediaTotal").text((mediaObligatorias * 0.4) + (mediaBach * 0.6) + mediaEspecificas)
