@@ -21,11 +21,11 @@ var x = setInterval(function() {
 
   // If the count down is finished, write some text
   if(days <30 && days >=0){
-    document.getElementById("displayFriday").innerHTML = "Ya casi es Navidad!";
+    document.getElementById("displayFriday").innerHTML = "Ya casi es Verano!";
   }
   if (distance < 0) {
     clearInterval(x);
-    document.getElementById("displayTime").innerHTML = "YA ES NAVIDAD!";
+    document.getElementById("displayTime").innerHTML = "YA ES VERANO!";
   }
 }, 1000);
 
