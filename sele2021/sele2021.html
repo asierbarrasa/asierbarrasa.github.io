@@ -33,80 +33,105 @@
     <!-- <script src="script.js"></script> -->
     <div class="container">
 
-
-        <div>
-            <h4>Nota</h4>
-            <div id="mediaTotal"></div>
-        </div>
-
-
-
-
-
-
-
-        <h4>Bach</h4>
-        <div id="mediaBach"></div> <span id="mediaBachPonderada"></span>
-
-
-        <div class="row">
-
-
-            <div class="input-field col s6 l6">
-                <input type="number" name="" id="notaPrimero">
-                <label>Nota media de 1º</label>
-            </div>
-     
-
-            <div class="input-field col s6 l6">
-                <input type="number" id="notaSegundo">
-                <label for="">Nota media de 2º</label>
-            </div>
-
-
-        </div>
-
-
-
-
-
-
-        <div>
-            <h4>Obligatorias</h4> <span id="mediaObligatorias"></span> <span id="mediaObligatoriasPonderada"></span>
-        </div>
-
-
-        <div>
-            <div class="row">
-
-
-                <div class="input-field col s6 l6">
-                    <input type="number" value="" id="valueLengua">
-                    <label>Lengua</label>
+          <div class="navbar-fixed teal">
+          <nav class="container">
+            <div class="nav-wrapper teal">
+                <div class="center">
+                    <h4 class="nota">Nota total</h4>
+                    <h4 class="nota" id="mediaTotal"></h4>
                 </div>
+                   
+            </div>
+          </nav>
+        </div>
+       
 
-           
 
 
-                    <div class="input-field col s6 l6">
-                        <input type="number" value="" id="valueMate">
-                        <label>Mate</label>
+
+        <ul class="collapsible popout">
+            <li class="active">
+                <div class="collapsible-header">
+                    <div>
+                        <h4>Bach</h4> <br>
+                        <span>Media de Bachiller: </span> <span id="mediaBach"></span><br>
+                        <span>Nota sobre el total: </span> <span id="mediaBachPonderada"></span>
+
+                        <i class="material-icons"></i>
 
                     </div>
                 </div>
 
-                <div>
+                <div class="collapsible-body">
 
                     <div class="row">
 
+
                         <div class="input-field col s6 l6">
-
-                            <input type="number" value="" id="valueIngles">
-                            <label>Inglés</label>
-
+                            <input type="number" name="" id="notaPrimero">
+                            <label>Nota media de 1º</label>
                         </div>
 
-                  
+
+                        <div class="input-field col s6 l6">
+                            <input type="number" id="notaSegundo">
+                            <label for="">Nota media de 2º</label>
+                        </div>
+
+
+                    </div>
+
+
+
+            </li>
+
+        </ul>
+
+        <ul class="collapsible popout">
+            <li class="active">
+                <div class="collapsible-header">
+
+                    <div>
+                        <h4>Obligatorias</h4>
+                        <span>Media de las asignaturas obligatorias: </span><span id="mediaObligatorias"></span>
+                        <br>
+                        <span>Nota sobre el total: </span>
+                        <span id="mediaObligatoriasPonderada"></span>
+                    </div>
+
+                </div>
+
+                <div class="collapsible-body">
+                    <div class="row">
+
+
+                        <div class="input-field col s6 l6">
+                            <input type="number" value="" id="valueLengua">
+                            <label>Lengua</label>
+                        </div>
+
+
+
+
+                        <div class="input-field col s6 l6">
+                            <input type="number" value="" id="valueMate">
+                            <label>Mate</label>
+
+                        </div>
+                    </div>
+
+                    <div>
+
+                        <div class="row">
+
+                            <div class="input-field col s6 l6">
+
+                                <input type="number" value="" id="valueIngles">
+                                <label>Inglés</label>
+
+                            </div>
+
+
 
                             <div class="input-field col s6 l6">
 
@@ -125,24 +150,82 @@
                                     <label>Euskera</label>
                                 </div>
                             </div>
+                        </div>
+            </li>
+        </ul>
 
-                            <div>
-                                <h4>Especificas</h4> <span id="mediaEspecificas"></span>
+        <ul class="collapsible popout">
+            <li class="active">
+                <div class="collapsible-header">
+                    <div>
+                        <h4>Especificas</h4>
+                        <span>Nota sobre el total: </span><span id="mediaEspecificas"></span>
+                    </div>
+                </div>
+                <div class="collapsible-body">
+                    <div>
+
+                        <div class="row">
+
+
+                            <div class="input-field col s6">
+                                <input type="number" value="" id="value1">
+
+                                <label>Especifica 1</label>
+                            </div>
+                            <div class="col s6">
+                                <div class="input-field">
+                                    <select name="" id="select1">
+                                        <option value="0.1">0.1</option>
+                                        <option value="0.2">0.2</option>
+                                        <option value="0.3">0.3</option>
+                                    </select>
+                                    <label>Ponderación</label>
+                                </div>
                             </div>
 
-                            <div>
 
+                        </div>
+
+
+
+
+
+
+
+                        <div>
+                            <div class="row">
+
+
+                                <div class="input-field col s6">
+
+                                    <input type="number" value="" id="value2">
+                                    <label>Especifica 2</label>
+                                </div>
+
+                                <div class="col s6">
+                                    <div class="input-field">
+                                        <select name="" id="select2">
+                                            <option value="0.1">0.1</option>
+                                            <option value="0.2">0.2</option>
+                                            <option value="0.3">0.3</option>
+                                        </select>
+                                        <label>Ponderación</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
                                 <div class="row">
 
 
                                     <div class="input-field col s6">
-                                        <input type="number" value="" id="value1">
-
-                                        <label>Especifica 1</label>
+                                        <input type="number" value="" id="value3">
+                                        <label>Especifica 3</label>
                                     </div>
+
                                     <div class="col s6">
                                         <div class="input-field">
-                                            <select name="" id="select1">
+                                            <select name="" id="select3">
                                                 <option value="0.1">0.1</option>
                                                 <option value="0.2">0.2</option>
                                                 <option value="0.3">0.3</option>
@@ -150,151 +233,108 @@
                                             <label>Ponderación</label>
                                         </div>
                                     </div>
-
-
                                 </div>
 
+                            </div>
+            </li>
+        </ul>
+
+        <a class="waves-effect waves-light btn" id="btnCalcular">Calcular </a>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('select').formSelect();
+        });
+
+
+        $("#btnCalcular").click(function () {
+            var notaPrimero = parseFloat($("#notaPrimero").val().replace(',',
+                '.')) || 0
+            var notaSegundo = parseFloat($("#notaSegundo").val().replace(',',
+                '.')) || 0
+            var mediaBach = (notaPrimero + notaSegundo) / 2
 
 
 
 
-
-
-                                <div>
-                                    <div class="row">
-
-
-                                        <div class="input-field col s6">
-
-                                            <input type="number" value="" id="value2">
-                                            <label>Especifica 2</label>
-                                        </div>
-
-                                        <div class="col s6">
-                                            <div class="input-field">
-                                                <select name="" id="select2">
-                                                    <option value="0.1">0.1</option>
-                                                    <option value="0.2">0.2</option>
-                                                    <option value="0.3">0.3</option>
-                                                </select>
-                                                <label>Ponderación</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="row">
-
-
-                                            <div class="input-field col s6">
-                                                <input type="number" value="" id="value3">
-                                                <label>Especifica 3</label>
-                                            </div>
-
-                                            <div class="col s6">
-                                                <div class="input-field">
-                                                    <select name="" id="select3">
-                                                        <option value="0.1">0.1</option>
-                                                        <option value="0.2">0.2</option>
-                                                        <option value="0.3">0.3</option>
-                                                    </select>
-                                                    <label>Ponderación</label>
-                                                </div>
-                                            </div>
-                                        </div>
+            var notaMate = parseFloat($("#valueMate").val().replace(',',
+                '.')) || 0
+            var notaLengua = parseFloat($("#valueLengua").val().replace(',',
+                '.')) || 0
+            var notaIngles = parseFloat($("#valueIngles").val().replace(',',
+                '.')) || 0
+            var notaEuskera = parseFloat($("#valueEuskera").val().replace(',',
+                    '.')) ||
+                0
+            var notaHistoria = parseFloat($("#valueHistoria").val().replace(',',
+                '.')) || 0
+            var mediaObligatorias = (notaMate + notaLengua + notaIngles +
+                notaEuskera +
+                notaHistoria) / 5
 
 
 
-                                        <a class="waves-effect waves-light btn" id="btnCalcular">Calcular </a>
-                                    </div>
-                                    <script>
-                                        $(document).ready(function () {
-                                            $('select').formSelect();
-                                        });
+            var nota1 = parseFloat($("#value1").val().replace(',', '.')) || 0
+            var nota2 = parseFloat($("#value2").val().replace(',', '.')) || 0
+            var nota3 = parseFloat($("#value3").val().replace(',', '.')) || 0
 
-
-                                        $("#btnCalcular").click(function () {
-                                            var notaPrimero = parseFloat($("#notaPrimero").val().replace(',',
-                                                '.')) || 0
-                                            var notaSegundo = parseFloat($("#notaSegundo").val().replace(',',
-                                                '.')) || 0
-                                            var mediaBach = (notaPrimero + notaSegundo) / 2
-
-
-
-
-                                            var notaMate = parseFloat($("#valueMate").val().replace(',',
-                                                '.')) || 0
-                                            var notaLengua = parseFloat($("#valueLengua").val().replace(',',
-                                                '.')) || 0
-                                            var notaIngles = parseFloat($("#valueIngles").val().replace(',',
-                                                '.')) || 0
-                                            var notaEuskera = parseFloat($("#valueEuskera").val().replace(',',
-                                                    '.')) ||
-                                                0
-                                            var notaHistoria = parseFloat($("#valueHistoria").val().replace(',',
-                                                '.')) || 0
-                                            var mediaObligatorias = (notaMate + notaLengua + notaIngles +
-                                                notaEuskera +
-                                                notaHistoria) / 5
+            var ponderacion1 = parseFloat($("#select1").val().replace(',',
+                    '.')) ||
+                0
+            var ponderacion2 = parseFloat($("#select2").val().replace(',',
+                    '.')) ||
+                0
+            var ponderacion3 = parseFloat($("#select3").val().replace(',',
+                    '.')) ||
+                0
 
 
 
-                                            var nota1 = parseFloat($("#value1").val().replace(',', '.')) || 0
-                                            var nota2 = parseFloat($("#value2").val().replace(',', '.')) || 0
-                                            var nota3 = parseFloat($("#value3").val().replace(',', '.')) || 0
+            var mediaEspecificas = (nota1 * ponderacion1) + (nota2 *
+                    ponderacion2) +
+                (
+                    nota3 *
+                    ponderacion3)
+            $("#mediaBach").text(mediaBach.toFixed(3) + "/10")
+            $("#mediaBachPonderada").text((mediaBach * 0.6).toFixed(3) + "/6")
+            $("#mediaObligatorias").text(mediaObligatorias.toFixed(3) + "/10")
+            $("#mediaObligatoriasPonderada").text((mediaObligatorias * 0.4).toFixed(3) +
+                "/4")
 
-                                            var ponderacion1 = parseFloat($("#select1").val().replace(',',
-                                                    '.')) ||
-                                                0
-                                            var ponderacion2 = parseFloat($("#select2").val().replace(',',
-                                                    '.')) ||
-                                                0
-                                            var ponderacion3 = parseFloat($("#select3").val().replace(',',
-                                                    '.')) ||
-                                                0
+            $("#mediaEspecificas").text(mediaEspecificas.toFixed(3))
 
+            $("#mediaTotal").text(": " + ((mediaObligatorias * 0.4) + (mediaBach *
+                    0.6) +
+                mediaEspecificas).toFixed(3))
 
+            M.toast({
+                html: 'La nota es: ' + ((mediaObligatorias * 0.4) + (
+                        mediaBach *
+                        0.6) +
+                    mediaEspecificas).toFixed(3)
+            })
 
-                                            var mediaEspecificas = (nota1 * ponderacion1) + (nota2 *
-                                                    ponderacion2) +
-                                                (
-                                                    nota3 *
-                                                    ponderacion3)
-                                            $("#mediaBach").text(mediaBach + "/10")
-                                            $("#mediaBachPonderada").text((mediaBach * 0.6) + "/6")
-                                            $("#mediaObligatorias").text(mediaObligatorias + "/10")
-                                            $("#mediaObligatoriasPonderada").text((mediaObligatorias * 0.4) +
-                                                "/4")
+        })
 
-                                            $("#mediaEspecificas").text(mediaEspecificas)
+        $(document).ready(function () {
+            $('.collapsible').collapsible();
+        });
 
-                                            $("#mediaTotal").text((mediaObligatorias * 0.4) + (mediaBach *
-                                                    0.6) +
-                                                mediaEspecificas)
-
-                                            M.toast({
-                                                html: 'La nota es: ' + ((mediaObligatorias * 0.4) + (mediaBach *
-                                                    0.6) +
-                                                mediaEspecificas)
-                                            })
-
-                                        })
-
-
-                                        $('body').keypress(function (e) {
-                                            if (e.which == '13') {
-                                                $("#btnCalcular").click()
-                                            }
-                                        });
-                                    </script>
+        $('body').keypress(function (e) {
+            if (e.which == '13') {
+                $("#btnCalcular").click()
+            }
+        });
+    </script>
 </body>
 
 <footer class="page-footer white container">
 
     <div class="footer-copyright white">
-      <div class=" ">
-        <div class="right " style="color: black;">V0.7.3</div>
-      </div>
+        <div class=" ">
+            <div class="right " style="color: black;">V0.8.0</div>
+        </div>
     </div>
-  </footer>
+</footer>
+
 </html>

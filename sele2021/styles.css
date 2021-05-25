@@ -4,7 +4,7 @@
 
 
 #mediaTotal{
-    color: red;
+    /* text-decoration: underline; */
 }
 
 
@@ -18,4 +18,17 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+.nota{
+  display: inline;
+}
+
+.navbar-fixed nav {
+
+  /* max-width: 70%; */
+}
+
+.body{
+  margin-top: 4%;
 }
