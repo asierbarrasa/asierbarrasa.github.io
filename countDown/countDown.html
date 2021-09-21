@@ -6,26 +6,181 @@
         <title>¿Cuánto falta para el viernes?</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link type="text/css" rel="stylesheet" href="../css/materialize.min.css" media="screen,projection" />
+        <link type="text/css" rel="stylesheet" href="../img/css/materialize.min.css" media="screen,projection" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <script type="text/javascript" src="../js/materialize.min.js"></script>
+        <script type="text/javascript" src="../img/js/materialize.min.js"></script>
         <link rel="stylesheet" href="css/main.css">
         <script src="js/timer.js"></script>
-
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Bevan&display=swap" rel="stylesheet">
 
 </head>
 
 <body>
 
-        <section class="b1">
+        <section class="b1" >
                 <div class="in1">
-                        <div class="content">
+                        <div class="content hidden" id="homer">
+                                <table  align="center" border="0">
+                                        <tr>
+                                          <td colspan="9" align="center">
+                                                  <br />
+                                                  <br />
+                                                  <br />
+                                                  <h3 class="card-title center" id="displayFriday" style="margin: 5%">
+                                                        <p></p>
+                                                </h3><br>
+                                                <h3 class="card-title center" id="displayTime"></h3>
+                            
+                                          </td>
+                                        </tr>
+                                        <tr >
+                                                <td width="86" align="right">
+                                                        <img src="./img/8vBZt79.gif" height="60" width="60" />
+                                                        <!--<img src="images/reloj_60px.gif" height="60" width="60" />-->
+                                              </td>
+                                          <td width="47">&nbsp;</td>
+                                          <td width="89">&nbsp;</td>
+                                          <td width="55">&nbsp;</td>
+                                          <td width="162" rowspan="9" align="center">
+                                                  <img src="./img/35eRLsx.gif" height="384" width="208" />
+                                                  <!--<img src="images/jebus.gif" height="384" width="208" />-->
+                                              </td>
+                                          <td width="55">&nbsp;</td>
+                                          <td width="101">&nbsp;</td>
+                                          <td width="70">&nbsp;</td>
+                                          <td width="97">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>
+                                                  <img src="./img/rfgZDZ9.gif" height="70" width="70" />
+                                                  <!--<img src="images/tostadora_70px.gif" height="70" width="70" />-->
+                                              </td>
+                                        </tr>
+                                        <tr>
+                                          <td>
+                                                  <img src="./img/qcZrv7k.gif" height="36" width="70" />
+                                                  <!--<img src="images/gusano_60px.gif" height="36" width="70" />-->
+                                              </td>
+                                          <td>&nbsp;</td>
+                                          <td align="center">
+                                                  <img src="./img/rfgZDZ9.gif" height="70" width="70" />
+                                                  <!--<img src="images/tostadora_70px.gif" height="70" width="70" />-->
+                                              </td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td align="right">
+                                                  <img src="./img/LzkRZNO.gif" height="40" width="70" />
+                                                  <!--<img src="images/gusano_70px.gif" height="40" width="70" />-->
+                                              </td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td rowspan="2" align="center">
+                                                  <img src="./img/RLOthSg.gif" height="90" width="90" />
+                                                  <!--<img src="images/boca_90px.gif" height="90" width="90" />-->
+                                              </td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                          <td>
+                                                  <img src="./img/4IMtxIj.gif" height="100" width="100" />
+                                                  <!--<img src="images/tostadora_100px.gif" height="100" width="100" />-->
+                                              </td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td align="right">
+                                                  <img src="./img/bTgwHP9.gif" height="80" width="80" />
+                                                  <!--<img src="images/campana_80px.gif" height="80" width="80" />-->
+                                              </td>
+                                          <td>&nbsp;</td>
+                                          <td align="center">
+                                                  <img src="./img/RLOthSg.gif" height="90" width="90" />
+                                                  <!--<img src="images/boca_90px.gif" height="90" width="90" />-->
+                                              </td>
+                                        </tr>
+                                        <tr>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                          <td align="right">
+                                                  <img src="./img/Sm6yxaJ.gif" height="60" width="60" />
+                                                  <!--<img src="images/campana_60px.gif" height="60" width="60" />-->
+                                              </td>
+                                          <td>&nbsp;</td>
+                                          <td align="right">
+                                                  <img src="./img/8vBZt79.gif" height="60" width="60" />
+                                                  <!--<img src="images/reloj_80px.gif" height="60" width="60" />-->
+                                              </td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td rowspan="3" align="right">
+                                                  <img src="./img/4IMtxIj.gif" height="100" width="100" />
+                                                  <!--<img src="images/tostadora_100px.gif" height="100" width="100" />-->
+                                              </td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td align="center">
+                                                  <img src="./img/ll8ej21.gif" height="60" width="60" />
+                                                  <!--<img src="images/reloj_60px.gif" height="60" width="60" />-->
+                                              </td>
+                                        </tr>
+                                        <tr>
+                                          <td>
+                                                  <img src="./img/LzkRZNO.gif" height="40" width="70" />
+                                                  <!--<img src="images/gusano_70px.gif" height="40" width="70" />-->
+                                              </td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                          <td>&nbsp;</td>
+                                        </tr>
+                                      </table>
+
+                          
+                        </div>
 
 
-                                <h3 class="card-title center" id="displayFriday" style="margin: 5%">
+                        <div class="content hidden" id="timer">
+
+
+                                <h3 class="card-title center" id="displayFriday2" style="margin: 5%">
                                         <p></p>
                                 </h3><br>
-                                <h3 class="card-title center" id="displayTime"></h3>
+                                <h3 class="card-title center" id="displayTime2"></h3>
                         </div>
                 </div>
 
