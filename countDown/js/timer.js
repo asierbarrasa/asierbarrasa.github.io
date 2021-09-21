@@ -30,6 +30,7 @@ var x = setInterval(function() {
   };
 
 if(!mobileAndTabletCheck()){
+  document.body.style.fontSize = "1.2em";
 
 
   // If the count down is finished, write some text
@@ -55,6 +56,11 @@ if(!mobileAndTabletCheck()){
   }
 
 }else{
+
+  // Set color to purple
+  document.body.style.fontSize = "1.4em";
+
+
 
   if(!document.getElementById("homer").classList.contains('hidden')){
     document.getElementById("homer").classList.add('hidden')
