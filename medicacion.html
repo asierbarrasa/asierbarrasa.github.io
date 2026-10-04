@@ -46,6 +46,13 @@
             border-radius: 12px;
             font-weight: bold;
         }
+        .badge-boxes {
+            background-color: #0288d1;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
         .storage-status {
             font-size: 0.85rem;
             display: flex;
@@ -80,6 +87,11 @@
             border-radius: 12px;
             padding: 18px;
         }
+        .action-btns {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -94,29 +106,39 @@
 <div class="container">
 
     <ul class="collapsible popout">
-        <!-- Formulario 1: Añadir Medicamento -->
+        <!-- Formulario 1: Añadir Medicamento / Reponer Cajas -->
         <li class="active">
             <div class="collapsible-header blue lighten-5 blue-text text-darken-3">
-                <i class="material-icons">add_circle</i>Añadir Nuevo Medicamento
+                <i class="material-icons">add_circle</i>Añadir Medicamento o Reponer Stock
             </div>
             <div class="collapsible-body white">
                 <form id="form-medicamento">
                     <div class="row" style="margin-bottom:0;">
-                        <div class="input-field col s12 m4">
+                        <div class="input-field col s12">
+                            <select id="select_med_accion" onchange="cambiarModoFormulario()">
+                                <option value="NEW" selected>✨ Crear Nuevo Medicamento</option>
+                            </select>
+                            <label>Acción / Medicamento Existente</label>
+                        </div>
+                        <div class="input-field col s12 m6" id="wrapper-nombre">
                             <input id="nombre" type="text" class="validate" required>
                             <label for="nombre">Nombre del Medicamento</label>
                         </div>
-                        <div class="input-field col s6 m4">
+                        <div class="input-field col s6 m3">
+                            <input id="num_cajas" type="number" min="1" value="1" class="validate" required>
+                            <label for="num_cajas" id="label_num_cajas">Número de cajas</label>
+                        </div>
+                        <div class="input-field col s6 m3">
                             <input id="pastillas_caja" type="number" min="1" class="validate" required>
                             <label for="pastillas_caja">Pastillas por caja</label>
                         </div>
-                        <div class="input-field col s6 m4">
+                        <div class="input-field col s12 m6" id="wrapper-tomas">
                             <input id="tomas_diarias" type="number" min="1" class="validate" required>
                             <label for="tomas_diarias">Tomas al día</label>
                         </div>
                     </div>
-                    <button class="btn waves-effect waves-light blue darken-2 btn-mobile" type="submit">
-                        Guardar Medicamento <i class="material-icons right">save</i>
+                    <button class="btn waves-effect waves-light blue darken-2 btn-mobile" type="submit" id="btn-submit-med">
+                        Guardar Stock <i class="material-icons right">save</i>
                     </button>
                 </form>
             </div>
@@ -159,12 +181,12 @@
                 <thead>
                     <tr>
                         <th>Medicamento</th>
-                        <th>Caja</th>
+                        <th>Stock Acumulado</th>
                         <th>Tomas/Día</th>
                         <th>Extras</th>
                         <th>Fecha Inicio</th>
                         <th>Fecha Fin Recalculada</th>
-                        <th>Acción</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody id="tabla-medicamentos"></tbody>
@@ -223,6 +245,22 @@
 
 </div>
 
+<!-- Modal para reponer cajas rápidamente -->
+<div id="modal-reponer" class="modal">
+    <div class="modal-content">
+        <h5 class="blue-text text-darken-3"><i class="material-icons vertical-align-middle">inventory</i> Reponer Cajas</h5>
+        <p>Añadir cajas a <strong id="modal-med-nombre"></strong></p>
+        <div class="input-field">
+            <input id="modal-num-cajas" type="number" min="1" value="1" class="validate" required>
+            <label for="modal-num-cajas" class="active">¿Cuántas cajas nuevas has conseguido?</label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-grey btn-flat">Cancelar</a>
+        <button onclick="confirmarReponerStockModal()" class="waves-effect waves-light btn blue darken-2">Añadir Cajas</button>
+    </div>
+</div>
+
 <!-- Materialize JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script>
@@ -233,7 +271,8 @@
         historial: []
     };
 
-    // Solicitar almacenamiento persistente para evitar borrado por el navegador
+    let selectedMedIdForModal = null;
+
     if (navigator.storage && navigator.storage.persist) {
         navigator.storage.persist().then(granted => {
             const statusDiv = document.getElementById('storage-indicator');
@@ -254,6 +293,10 @@
         if (dataStr) {
             try {
                 db = JSON.parse(dataStr);
+                // Garantizar retrocompatibilidad con registros antiguos
+                db.medicamentos.forEach(m => {
+                    if (!m.cajas_totales) m.cajas_totales = 1;
+                });
             } catch(e) {
                 console.error("Error leyendo LocalStorage", e);
             }
@@ -266,23 +309,117 @@
         actualizarInterfaz();
     }
 
-    // Formulario 1: Nuevo Medicamento
+    function cambiarModoFormulario() {
+        const selectAccion = document.getElementById('select_med_accion').value;
+        const inputNombre = document.getElementById('nombre');
+        const inputTomas = document.getElementById('tomas_diarias');
+        const inputPastillasCaja = document.getElementById('pastillas_caja');
+        const labelNumCajas = document.getElementById('label_num_cajas');
+        const btnSubmit = document.getElementById('btn-submit-med');
+
+        if (selectAccion === 'NEW') {
+            inputNombre.value = '';
+            inputNombre.removeAttribute('disabled');
+            document.getElementById('wrapper-nombre').style.display = 'block';
+            inputTomas.value = '';
+            inputPastillasCaja.value = '';
+            labelNumCajas.textContent = "Número de cajas";
+            btnSubmit.innerHTML = 'Guardar Medicamento <i class="material-icons right">save</i>';
+        } else {
+            const medId = parseInt(selectAccion);
+            const med = db.medicamentos.find(m => m.id === medId);
+            if (med) {
+                inputNombre.value = med.nombre;
+                inputPastillasCaja.value = med.pastillas_caja;
+                inputTomas.value = med.tomas_diarias;
+                labelNumCajas.textContent = "Cajas a AÑADIR";
+                btnSubmit.innerHTML = 'Añadir Cajas a Medicamento <i class="material-icons right">add_box</i>';
+            }
+        }
+        M.updateTextFields();
+    }
+
+    // Formulario 1: Crear o Reponer
     document.getElementById('form-medicamento').addEventListener('submit', function(e) {
         e.preventDefault();
-        const nuevoMed = {
-            id: Date.now(),
-            nombre: document.getElementById('nombre').value.trim(),
-            pastillas_caja: parseInt(document.getElementById('pastillas_caja').value),
-            tomas_diarias: parseInt(document.getElementById('tomas_diarias').value),
-            fecha_registro: new Date().toISOString()
-        };
+        const modo = document.getElementById('select_med_accion').value;
+        const numCajasIngresadas = parseInt(document.getElementById('num_cajas').value) || 1;
+        const pastillasCaja = parseInt(document.getElementById('pastillas_caja').value);
+        const tomasDiarias = parseInt(document.getElementById('tomas_diarias').value);
 
-        db.medicamentos.push(nuevoMed);
+        if (modo === 'NEW') {
+            const nombre = document.getElementById('nombre').value.trim();
+            // Comprobar si existe por nombre
+            const existe = db.medicamentos.find(m => m.nombre.toLowerCase() === nombre.toLowerCase());
+            if (existe) {
+                if (confirm(`Ya existe el medicamento "${existe.nombre}". ¿Quieres añadirle estas ${numCajasIngresadas} cajas?`)) {
+                    existe.cajas_totales += numCajasIngresadas;
+                    guardarBaseDatos();
+                    M.toast({html: `Añadidas ${numCajasIngresadas} cajas a ${existe.nombre}`, classes: 'blue rounded'});
+                    resetFormMed();
+                    return;
+                }
+            }
+
+            const nuevoMed = {
+                id: Date.now(),
+                nombre: nombre,
+                cajas_totales: numCajasIngresadas,
+                pastillas_caja: pastillasCaja,
+                tomas_diarias: tomasDiarias,
+                fecha_registro: new Date().toISOString()
+            };
+
+            db.medicamentos.push(nuevoMed);
+            M.toast({html: `Medicamento guardado con ${numCajasIngresadas} caja(s)`, classes: 'green rounded'});
+        } else {
+            const medId = parseInt(modo);
+            const med = db.medicamentos.find(m => m.id === medId);
+            if (med) {
+                med.cajas_totales += numCajasIngresadas;
+                med.pastillas_caja = pastillasCaja;
+                med.tomas_diarias = tomasDiarias;
+                M.toast({html: `Añadidas ${numCajasIngresadas} caja(s) a ${med.nombre}`, classes: 'blue rounded'});
+            }
+        }
+
         guardarBaseDatos();
-
-        M.toast({html: 'Medicamento guardado', classes: 'green rounded'});
-        document.getElementById('form-medicamento').reset();
+        resetFormMed();
     });
+
+    function resetFormMed() {
+        document.getElementById('form-medicamento').reset();
+        document.getElementById('select_med_accion').value = 'NEW';
+        cambiarModoFormulario();
+        M.updateTextFields();
+    }
+
+    // Abrir Modal para Reponer directamente desde la Tabla
+    function abrirModalReponer(medId) {
+        const med = db.medicamentos.find(m => m.id === medId);
+        if (!med) return;
+        selectedMedIdForModal = medId;
+        document.getElementById('modal-med-nombre').textContent = med.nombre;
+        document.getElementById('modal-num-cajas').value = 1;
+        const elem = document.getElementById('modal-reponer');
+        const instance = M.Modal.getInstance(elem);
+        instance.open();
+        M.updateTextFields();
+    }
+
+    function confirmarReponerStockModal() {
+        if (!selectedMedIdForModal) return;
+        const med = db.medicamentos.find(m => m.id === selectedMedIdForModal);
+        const cajas = parseInt(document.getElementById('modal-num-cajas').value) || 1;
+        if (med) {
+            med.cajas_totales += cajas;
+            guardarBaseDatos();
+            M.toast({html: `Añadidas ${cajas} caja(s) a ${med.nombre}`, classes: 'green rounded'});
+        }
+        const elem = document.getElementById('modal-reponer');
+        const instance = M.Modal.getInstance(elem);
+        instance.close();
+    }
 
     // Formulario 2: Toma Extra
     document.getElementById('form-tomas').addEventListener('submit', function(e) {
@@ -326,13 +463,18 @@
     }
 
     function actualizarInterfaz() {
-        const select = document.getElementById('select_medicamento');
+        const selectAccion = document.getElementById('select_med_accion');
+        const selectExtra = document.getElementById('select_medicamento');
         const tbodyMed = document.getElementById('tabla-medicamentos');
         const tbodyHist = document.getElementById('tabla-historial');
         const emptyMeds = document.getElementById('empty-meds');
         const emptyHist = document.getElementById('empty-history');
 
-        select.innerHTML = '<option value="" disabled selected>Selecciona medicamento</option>';
+        // Reset selects
+        const modoActual = selectAccion.value;
+        selectAccion.innerHTML = '<option value="NEW">✨ Crear Nuevo Medicamento</option>';
+        selectExtra.innerHTML = '<option value="" disabled selected>Selecciona medicamento</option>';
+
         tbodyMed.innerHTML = '';
         tbodyHist.innerHTML = '';
 
@@ -341,17 +483,27 @@
 
         // Renderizar Medicamentos
         db.medicamentos.forEach(med => {
-            const opt = document.createElement('option');
-            opt.value = med.id;
-            opt.textContent = med.nombre;
-            select.appendChild(opt);
+            const numCajas = med.cajas_totales || 1;
+            const pastillasTotalesCompradas = numCajas * med.pastillas_caja;
 
+            // Rellenar selects
+            const optAccion = document.createElement('option');
+            optAccion.value = med.id;
+            optAccion.textContent = `📦 Añadir cajas a: ${med.nombre}`;
+            selectAccion.appendChild(optAccion);
+
+            const optExtra = document.createElement('option');
+            optExtra.value = med.id;
+            optExtra.textContent = med.nombre;
+            selectExtra.appendChild(optExtra);
+
+            // Cálculos
             const extras = db.historial
                 .filter(h => h.medicamento_id === med.id)
                 .reduce((sum, h) => sum + h.pastillas_extra, 0);
 
             const fechaInicio = new Date(med.fecha_registro);
-            const pastillasRestantes = med.pastillas_caja - extras;
+            const pastillasRestantes = pastillasTotalesCompradas - extras;
             const diasDuracion = Math.floor(pastillasRestantes / med.tomas_diarias);
 
             const fechaFin = new Date(fechaInicio);
@@ -365,19 +517,28 @@
             tbodyMed.innerHTML += `
                 <tr>
                     <td><strong>${med.nombre}</strong></td>
-                    <td>${med.pastillas_caja} pastillas</td>
+                    <td>
+                        <span class="badge-boxes">${numCajas} caja(s)</span><br>
+                        <small class="grey-text">(${pastillasTotalesCompradas} pastillas tot.)</small>
+                    </td>
                     <td>${med.tomas_diarias}/día</td>
                     <td><span class="badge-extra">+${extras}</span></td>
                     <td>${fechaInicio.toLocaleDateString()}</td>
                     <td class="${claseFecha}">${alertaIcono}${fechaFin.toLocaleDateString()} (${diasDuracion >= 0 ? diasDuracion : 0} días ret.)</td>
                     <td>
-                        <button class="btn-floating btn-small waves-effect waves-light red" onclick="borrarMedicamento(${med.id})">
-                            <i class="material-icons">delete</i>
-                        </button>
+                                <button class="btn-floating btn-small waves-effect waves-light red" onclick="borrarMedicamento(${med.id})" title="Eliminar">
+                                <i class="material-icons">delete</i>
+                            </button>
+                        </div>
                     </td>
                 </tr>
             `;
         });
+
+        // Mantener selección anterior si aplica
+        if (modoActual && Array.from(selectAccion.options).some(o => o.value === modoActual)) {
+            selectAccion.value = modoActual;
+        }
 
         // Renderizar Historial
         db.historial.forEach(hist => {
@@ -399,7 +560,7 @@
             `;
         });
 
-        M.FormSelect.init(select);
+        M.FormSelect.init(document.querySelectorAll('select'));
     }
 
     // Exportar archivo JSON
@@ -426,6 +587,9 @@
                 const importedDb = JSON.parse(e.target.result);
                 if (importedDb.medicamentos && importedDb.historial) {
                     db = importedDb;
+                    db.medicamentos.forEach(m => {
+                        if (!m.cajas_totales) m.cajas_totales = 1;
+                    });
                     guardarBaseDatos();
                     M.toast({html: 'Datos importados correctamente', classes: 'green rounded'});
                 } else {
@@ -438,7 +602,6 @@
         reader.readAsText(file);
     }
 
-    // Registrar Manifest y ServiceWorker en caliente
     function configurarPWA() {
         const manifestObj = {
             "name": "Control de Medicación",
@@ -464,7 +627,7 @@
                 self.addEventListener('fetch', e => {
                     e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
                 });
-           å `;
+            `;
             const swBlob = new Blob([swCode], {type: 'application/javascript'});
             navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
         }
