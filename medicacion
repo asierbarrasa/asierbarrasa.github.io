@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Control de Medicación</title>
+    
+    <!-- Meta Tags para App Móvil (PWA) -->
+    <meta name="theme-color" content="#1976D2">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Medicación">
+    
+    <!-- Icono de la App -->
+    <link id="manifest-placeholder" rel="manifest">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3063/3063822.png">
+
+    <!-- Materialize CSS e Iconos de Google -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <style>
+        body { 
+            background-color: #f4f6f9; 
+            padding-bottom: 60px;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .header-bg {
+            background: linear-gradient(135deg, #1565C0, #1E88E5);
+            color: white;
+            padding: 20px 0 15px 0;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        .card-panel {
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .alert-date { color: #d32f2f; font-weight: bold; }
+        .ok-date { color: #2e7d32; font-weight: bold; }
+        .badge-extra {
+            background-color: #ef6c00;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+        .storage-status {
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            justify-content: center;
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+        .collapsible {
+            border: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-radius: 12px !important;
+            overflow: hidden;
+        }
+        .collapsible-header {
+            font-weight: 600;
+            color: #333;
+        }
+        .btn-mobile {
+            width: 100%;
+            border-radius: 8px;
+            height: 45px;
+            line-height: 45px;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        .backup-section {
+            margin-top: 30px;
+            background: #e3f2fd;
+            border-radius: 12px;
+            padding: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-bg center-align">
+    <h4 style="margin: 0; font-weight: 500;"><i class="material-icons vertical-align-middle" style="font-size: 32px;">healing</i> Medicación</h4>
+    <div id="storage-indicator" class="storage-status">
+        <i class="material-icons tiny">cloud_done</i> Datos almacenados localmente
+    </div>
+</div>
+
+<div class="container">
+
+    <ul class="collapsible popout">
+        <!-- Formulario 1: Añadir Medicamento -->
+        <li class="active">
+            <div class="collapsible-header blue lighten-5 blue-text text-darken-3">
+                <i class="material-icons">add_circle</i>Añadir Nuevo Medicamento
+            </div>
+            <div class="collapsible-body white">
+                <form id="form-medicamento">
+                    <div class="row" style="margin-bottom:0;">
+                        <div class="input-field col s12 m4">
+                            <input id="nombre" type="text" class="validate" required>
+                            <label for="nombre">Nombre del Medicamento</label>
+                        </div>
+                        <div class="input-field col s6 m4">
+                            <input id="pastillas_caja" type="number" min="1" class="validate" required>
+                            <label for="pastillas_caja">Pastillas por caja</label>
+                        </div>
+                        <div class="input-field col s6 m4">
+                            <input id="tomas_diarias" type="number" min="1" class="validate" required>
+                            <label for="tomas_diarias">Tomas al día</label>
+                        </div>
+                    </div>
+                    <button class="btn waves-effect waves-light blue darken-2 btn-mobile" type="submit">
+                        Guardar Medicamento <i class="material-icons right">save</i>
+                    </button>
+                </form>
+            </div>
+        </li>
+
+        <!-- Formulario 2: Tomas Extra -->
+        <li>
+            <div class="collapsible-header orange lighten-5 orange-text text-darken-4">
+                <i class="material-icons">add_alert</i>Registrar Toma Extra
+            </div>
+            <div class="collapsible-body white">
+                <form id="form-tomas">
+                    <div class="row" style="margin-bottom:0;">
+                        <div class="input-field col s12 m7">
+                            <select id="select_medicamento" required>
+                                <option value="" disabled selected>Selecciona medicamento</option>
+                            </select>
+                            <label>Medicamento</label>
+                        </div>
+                        <div class="input-field col s12 m5">
+                            <input id="pastillas_extra" type="number" min="1" value="1" class="validate" required>
+                            <label for="pastillas_extra">¿Cuántas de más has tomado?</label>
+                        </div>
+                    </div>
+                    <button class="btn waves-effect waves-light orange darken-3 btn-mobile" type="submit">
+                        Registrar Toma Extra <i class="material-icons right">add_circle_outline</i>
+                    </button>
+                </form>
+            </div>
+        </li>
+    </ul>
+
+    <!-- Tabla Medicamentos -->
+    <div class="card-panel">
+        <h5 class="blue-text text-darken-3" style="margin-top:0; font-size: 1.3rem;">
+            <i class="material-icons vertical-align-middle">list_alt</i> Estado de Medicamentos
+        </h5>
+        <div class="table-container">
+            <table class="striped highlight responsive-table">
+                <thead>
+                    <tr>
+                        <th>Medicamento</th>
+                        <th>Caja</th>
+                        <th>Tomas/Día</th>
+                        <th>Extras</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin Recalculada</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-medicamentos"></tbody>
+            </table>
+        </div>
+        <div id="empty-meds" class="center-align grey-text text-darken-1" style="padding: 20px; display:none;">
+            No tienes medicamentos registrados aún.
+        </div>
+    </div>
+
+    <!-- Tabla Historial Extras -->
+    <div class="card-panel">
+        <h5 class="orange-text text-darken-3" style="margin-top:0; font-size: 1.3rem;">
+            <i class="material-icons vertical-align-middle">history</i> Registro de Tomas Extra
+        </h5>
+        <div class="table-container">
+            <table class="striped highlight responsive-table">
+                <thead>
+                    <tr>
+                        <th>Medicamento</th>
+                        <th>Tomadas de más</th>
+                        <th>Fecha y Hora</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-historial"></tbody>
+            </table>
+        </div>
+        <div id="empty-history" class="center-align grey-text text-darken-1" style="padding: 20px; display:none;">
+            Sin registro de tomas extras.
+        </div>
+    </div>
+
+    <!-- Copias de seguridad y Datos -->
+    <div class="backup-section">
+        <h6 class="blue-text text-darken-4" style="font-weight: bold; margin-top:0;">
+            <i class="material-icons vertical-align-middle">security</i> Copia de Seguridad
+        </h6>
+        <p class="grey-text text-darken-2" style="font-size: 0.9rem;">
+            Tus datos se guardan en tu móvil. Puedes descargar un respaldo en formato JSON para no perder nada o pasarlo a otro dispositivo.
+        </p>
+        <div class="row" style="margin-bottom:0;">
+            <div class="col s12 m6" style="margin-bottom: 10px;">
+                <button onclick="exportarDatos()" class="btn waves-effect waves-light teal darken-1 btn-mobile">
+                    <i class="material-icons left">file_download</i> Exportar Copia (.json)
+                </button>
+            </div>
+            <div class="col s12 m6">
+                <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importarDatos(event)">
+                <button onclick="document.getElementById('import-file').click()" class="btn waves-effect waves-light indigo darken-1 btn-mobile">
+                    <i class="material-icons left">file_upload</i> Importar Copia
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Materialize JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+    const STORAGE_KEY = 'control_medicacion_pwa_v1';
+
+    let db = {
+        medicamentos: [],
+        historial: []
+    };
+
+    // Solicitar almacenamiento persistente para evitar borrado por el navegador
+    if (navigator.storage && navigator.storage.persist) {
+        navigator.storage.persist().then(granted => {
+            const statusDiv = document.getElementById('storage-indicator');
+            if (granted) {
+                statusDiv.innerHTML = '<i class="material-icons tiny green-text">check_circle</i> Almacenamiento persistente activado';
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        M.AutoInit();
+        cargarBaseDatos();
+        configurarPWA();
+    });
+
+    function cargarBaseDatos() {
+        const dataStr = localStorage.getItem(STORAGE_KEY);
+        if (dataStr) {
+            try {
+                db = JSON.parse(dataStr);
+            } catch(e) {
+                console.error("Error leyendo LocalStorage", e);
+            }
+        }
+        actualizarInterfaz();
+    }
+
+    function guardarBaseDatos() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+        actualizarInterfaz();
+    }
+
+    // Formulario 1: Nuevo Medicamento
+    document.getElementById('form-medicamento').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const nuevoMed = {
+            id: Date.now(),
+            nombre: document.getElementById('nombre').value.trim(),
+            pastillas_caja: parseInt(document.getElementById('pastillas_caja').value),
+            tomas_diarias: parseInt(document.getElementById('tomas_diarias').value),
+            fecha_registro: new Date().toISOString()
+        };
+
+        db.medicamentos.push(nuevoMed);
+        guardarBaseDatos();
+
+        M.toast({html: 'Medicamento guardado', classes: 'green rounded'});
+        document.getElementById('form-medicamento').reset();
+    });
+
+    // Formulario 2: Toma Extra
+    document.getElementById('form-tomas').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const medId = parseInt(document.getElementById('select_medicamento').value);
+        const extraCount = parseInt(document.getElementById('pastillas_extra').value);
+
+        if (!medId) {
+            M.toast({html: 'Selecciona un medicamento', classes: 'red rounded'});
+            return;
+        }
+
+        const nuevaToma = {
+            id: Date.now(),
+            medicamento_id: medId,
+            pastillas_extra: extraCount,
+            fecha_toma: new Date().toISOString()
+        };
+
+        db.historial.push(nuevaToma);
+        guardarBaseDatos();
+
+        M.toast({html: 'Toma extra registrada', classes: 'orange rounded'});
+        document.getElementById('form-tomas').reset();
+        document.getElementById('pastillas_extra').value = 1;
+    });
+
+    function borrarMedicamento(id) {
+        if (confirm('¿Eliminar este medicamento y sus tomas extras?')) {
+            db.medicamentos = db.medicamentos.filter(m => m.id !== id);
+            db.historial = db.historial.filter(h => h.medicamento_id !== id);
+            guardarBaseDatos();
+            M.toast({html: 'Medicamento eliminado', classes: 'red rounded'});
+        }
+    }
+
+    function borrarHistorial(id) {
+        db.historial = db.historial.filter(h => h.id !== id);
+        guardarBaseDatos();
+        M.toast({html: 'Registro eliminado', classes: 'grey rounded'});
+    }
+
+    function actualizarInterfaz() {
+        const select = document.getElementById('select_medicamento');
+        const tbodyMed = document.getElementById('tabla-medicamentos');
+        const tbodyHist = document.getElementById('tabla-historial');
+        const emptyMeds = document.getElementById('empty-meds');
+        const emptyHist = document.getElementById('empty-history');
+
+        select.innerHTML = '<option value="" disabled selected>Selecciona medicamento</option>';
+        tbodyMed.innerHTML = '';
+        tbodyHist.innerHTML = '';
+
+        emptyMeds.style.display = db.medicamentos.length === 0 ? 'block' : 'none';
+        emptyHist.style.display = db.historial.length === 0 ? 'block' : 'none';
+
+        // Renderizar Medicamentos
+        db.medicamentos.forEach(med => {
+            const opt = document.createElement('option');
+            opt.value = med.id;
+            opt.textContent = med.nombre;
+            select.appendChild(opt);
+
+            const extras = db.historial
+                .filter(h => h.medicamento_id === med.id)
+                .reduce((sum, h) => sum + h.pastillas_extra, 0);
+
+            const fechaInicio = new Date(med.fecha_registro);
+            const pastillasRestantes = med.pastillas_caja - extras;
+            const diasDuracion = Math.floor(pastillasRestantes / med.tomas_diarias);
+
+            const fechaFin = new Date(fechaInicio);
+            fechaFin.setDate(fechaFin.getDate() + diasDuracion);
+
+            const hoy = new Date();
+            const estaVencido = hoy > fechaFin || pastillasRestantes <= 0;
+            const claseFecha = estaVencido ? 'alert-date' : 'ok-date';
+            const alertaIcono = estaVencido ? '⚠️ ' : '';
+
+            tbodyMed.innerHTML += `
+                <tr>
+                    <td><strong>${med.nombre}</strong></td>
+                    <td>${med.pastillas_caja} pastillas</td>
+                    <td>${med.tomas_diarias}/día</td>
+                    <td><span class="badge-extra">+${extras}</span></td>
+                    <td>${fechaInicio.toLocaleDateString()}</td>
+                    <td class="${claseFecha}">${alertaIcono}${fechaFin.toLocaleDateString()} (${diasDuracion >= 0 ? diasDuracion : 0} días ret.)</td>
+                    <td>
+                        <button class="btn-floating btn-small waves-effect waves-light red" onclick="borrarMedicamento(${med.id})">
+                            <i class="material-icons">delete</i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        // Renderizar Historial
+        db.historial.forEach(hist => {
+            const med = db.medicamentos.find(m => m.id === hist.medicamento_id);
+            const nombreMed = med ? med.nombre : 'Medicamento eliminado';
+            const fecha = new Date(hist.fecha_toma);
+
+            tbodyHist.innerHTML += `
+                <tr>
+                    <td>${nombreMed}</td>
+                    <td><span class="badge-extra">+${hist.pastillas_extra}</span></td>
+                    <td>${fecha.toLocaleDateString()} ${fecha.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</td>
+                    <td>
+                        <button class="btn-floating btn-small waves-effect waves-light grey darken-1" onclick="borrarHistorial(${hist.id})">
+                            <i class="material-icons">undo</i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        M.FormSelect.init(select);
+    }
+
+    // Exportar archivo JSON
+    function exportarDatos() {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db, null, 2));
+        const downloadAnchor = document.createElement('a');
+        const fechaStr = new Date().toISOString().slice(0,10);
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", `copia_medicacion_${fechaStr}.json`);
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+        M.toast({html: 'Copia descargada', classes: 'teal rounded'});
+    }
+
+    // Importar archivo JSON
+    function importarDatos(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const importedDb = JSON.parse(e.target.result);
+                if (importedDb.medicamentos && importedDb.historial) {
+                    db = importedDb;
+                    guardarBaseDatos();
+                    M.toast({html: 'Datos importados correctamente', classes: 'green rounded'});
+                } else {
+                    throw new Error('Estructura no válida');
+                }
+            } catch(err) {
+                M.toast({html: 'Archivo JSON no válido', classes: 'red rounded'});
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    // Registrar Manifest y ServiceWorker en caliente
+    function configurarPWA() {
+        const manifestObj = {
+            "name": "Control de Medicación",
+            "short_name": "Medicación",
+            "start_url": "./index.html",
+            "display": "standalone",
+            "background_color": "#f4f6f9",
+            "theme_color": "#1976D2",
+            "icons": [{
+                "src": "https://cdn-icons-png.flaticon.com/512/3063/3063822.png",
+                "sizes": "512x512",
+                "type": "image/png"
+            }]
+        };
+
+        const manifestBlob = new Blob([JSON.stringify(manifestObj)], {type: 'application/json'});
+        document.getElementById('manifest-placeholder').setAttribute('href', URL.createObjectURL(manifestBlob));
+
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                self.addEventListener('install', e => self.skipWaiting());
+                self.addEventListener('activate', e => self.clients.claim());
+                self.addEventListener('fetch', e => {
+                    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+                });
+           å `;
+            const swBlob = new Blob([swCode], {type: 'application/javascript'});
+            navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
+        }
+    }
+</script>
+</body>
+</html>
