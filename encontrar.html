@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Buscador de Cosas</title>
+    
+    <!-- Meta Tags para App Móvil (PWA) -->
+    <meta name="theme-color" content="#00897b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Mis Cosas">
+    
+    <link id="manifest-placeholder" rel="manifest">
+    <!-- Usamos un icono genérico de caja fuerte/búsqueda -->
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2838/2838912.png">
+
+    <!-- Materialize CSS e Iconos -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <style>
+        body { 
+            background-color: #f0f4f8; 
+            padding-bottom: 70px;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .header-bg {
+            background: linear-gradient(135deg, #00897b, #00695c);
+            color: white;
+            padding: 20px 0 15px 0;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+        .input-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+        .item-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 5px solid #00897b;
+        }
+        .item-info h6 {
+            margin: 0 0 5px 0;
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.2rem;
+        }
+        .item-info .location {
+            color: #e65100;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+        .item-info .time {
+            color: #7f8c8d;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .btn-large-mobile {
+            width: 100%;
+            border-radius: 10px;
+            height: 54px;
+            line-height: 54px;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        .search-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .search-wrapper i {
+            position: absolute;
+            top: 12px;
+            left: 15px;
+            color: #95a5a6;
+        }
+        .search-wrapper input {
+            background: white !important;
+            border: none !important;
+            border-radius: 25px !important;
+            padding: 0 20px 0 45px !important;
+            height: 48px !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08) !important;
+            width: calc(100% - 65px) !important; /* Ajuste para el padding */
+            margin-bottom: 0 !important;
+        }
+        .search-wrapper input:focus {
+            box-shadow: 0 2px 15px rgba(0,137,123,0.3) !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-bg center-align">
+    <h4 style="margin: 0; font-weight: 600;"><i class="material-icons vertical-align-middle" style="font-size: 36px;">where_to_vote</i> ¿Dónde lo dejé?</h4>
+    <p style="margin: 5px 0 0 0; opacity: 0.9; font-size: 0.9rem;">Tu memoria externa</p>
+</div>
+
+<div class="container">
+
+    <!-- Formulario para añadir cosas -->
+    <div class="input-card">
+        <form id="form-item">
+            <div class="input-field">
+                <i class="material-icons prefix">vpn_key</i>
+                <input id="item_name" type="text" required placeholder="Ej: Llaves del coche, Cartera, Gafas...">
+                <label for="item_name" class="active">¿Qué has guardado o dejado?</label>
+            </div>
+            <div class="input-field" style="margin-top: 25px;">
+                <i class="material-icons prefix">place</i>
+                <input id="item_location" type="text" required placeholder="Ej: Cajón de la entrada, Mesa salón...">
+                <label for="item_location" class="active">¿Dónde está exactamente?</label>
+            </div>
+            <button class="btn waves-effect waves-light teal darken-1 btn-large-mobile" style="margin-top: 15px;" type="submit">
+                Guardar Ubicación <i class="material-icons right">save</i>
+            </button>
+        </form>
+    </div>
+
+    <!-- Buscador -->
+    <div class="search-wrapper">
+        <i class="material-icons">search</i>
+        <input type="text" id="search_input" placeholder="Buscar algo que he guardado..." onkeyup="filtrarLista()">
+    </div>
+
+    <!-- Lista de Cosas Guardadas -->
+    <div id="items-list">
+        <!-- Las tarjetas se generan aquí por JS -->
+    </div>
+    
+    <div id="empty-state" class="center-align grey-text" style="padding: 30px; display: none;">
+        <i class="material-icons" style="font-size: 48px; color: #cfd8dc;">inventory_2</i>
+        <p>No tienes nada guardado ahora mismo.<br>¡Todo está en su sitio!</p>
+    </div>
+
+</div>
+
+<!-- Materialize JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+    const STORAGE_KEY = 'donde_lo_deje_v1';
+    let cosasGuardadas = [];
+
+    // Solicitar almacenamiento persistente
+    if (navigator.storage && navigator.storage.persist) {
+        navigator.storage.persist();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        cargarDatos();
+        configurarPWA();
+    });
+
+    function cargarDatos() {
+        const dataStr = localStorage.getItem(STORAGE_KEY);
+        if (dataStr) {
+            try {
+                cosasGuardadas = JSON.parse(dataStr);
+            } catch(e) {
+                console.error("Error leyendo LocalStorage", e);
+            }
+        }
+        renderizarLista();
+    }
+
+    function guardarDatos() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(cosasGuardadas));
+        renderizarLista();
+    }
+
+    // Añadir nuevo objeto
+    document.getElementById('form-item').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const nombre = document.getElementById('item_name').value.trim();
+        const lugar = document.getElementById('item_location').value.trim();
+        const fechaActual = new Date();
+
+        const nuevoItem = {
+            id: Date.now(),
+            nombre: nombre,
+            lugar: lugar,
+            // Guardamos el timestamp para poder formatearlo después
+            timestamp: fechaActual.toISOString()
+        };
+
+        // Añadimos al principio de la lista
+        cosasGuardadas.unshift(nuevoItem);
+        guardarDatos();
+
+        M.toast({html: 'Ubicación guardada', classes: 'teal rounded'});
+        
+        // Limpiar formulario y quitar foco para que se esconda el teclado en móviles
+        document.getElementById('form-item').reset();
+        document.getElementById('item_name').blur();
+        document.getElementById('item_location').blur();
+    });
+
+    // Marcar como encontrado (Borrar)
+    function marcarEncontrado(id) {
+        cosasGuardadas = cosasGuardadas.filter(item => item.id !== id);
+        guardarDatos();
+        M.toast({html: '¡Genial! Objeto recuperado', classes: 'orange darken-2 rounded'});
+    }
+
+    // Filtrar con el buscador
+    function filtrarLista() {
+        const textoBusqueda = document.getElementById('search_input').value.toLowerCase();
+        renderizarLista(textoBusqueda);
+    }
+
+    // Formatear la fecha para que sea fácil de leer ("Hoy a las 14:30" o "12 oct a las 09:15")
+    function formatearFechaLegible(fechaISO) {
+        const fechaObj = new Date(fechaISO);
+        const hoy = new Date();
+        const ayer = new Date(hoy);
+        ayer.setDate(ayer.getDate() - 1);
+
+        const esHoy = fechaObj.toDateString() === hoy.toDateString();
+        const esAyer = fechaObj.toDateString() === ayer.toDateString();
+        
+        const hora = fechaObj.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+
+        if (esHoy) {
+            return `Hoy a las ${hora}`;
+        } else if (esAyer) {
+            return `Ayer a las ${hora}`;
+        } else {
+            const opciones = { day: 'numeric', month: 'short' };
+            return `${fechaObj.toLocaleDateString('es-ES', opciones)} a las ${hora}`;
+        }
+    }
+
+    function renderizarLista(filtro = '') {
+        const contenedor = document.getElementById('items-list');
+        const emptyState = document.getElementById('empty-state');
+        contenedor.innerHTML = '';
+
+        const listaFiltrada = cosasGuardadas.filter(item => 
+            item.nombre.toLowerCase().includes(filtro) || 
+            item.lugar.toLowerCase().includes(filtro)
+        );
+
+        if (listaFiltrada.length === 0) {
+            emptyState.style.display = 'block';
+            if (filtro !== '' && cosasGuardadas.length > 0) {
+                emptyState.innerHTML = '<p>No se ha encontrado nada con ese nombre.</p>';
+            } else {
+                emptyState.innerHTML = '<i class="material-icons" style="font-size: 48px; color: #cfd8dc;">inventory_2</i><p>No tienes nada guardado ahora mismo.<br>¡Todo está en su sitio!</p>';
+            }
+        } else {
+            emptyState.style.display = 'none';
+        }
+
+        listaFiltrada.forEach(item => {
+            const fechaLegible = formatearFechaLegible(item.timestamp);
+            
+            contenedor.innerHTML += `
+                <div class="item-card">
+                    <div class="item-info">
+                        <h6>${item.nombre}</h6>
+                        <div class="location">
+                            <i class="material-icons tiny">place</i> ${item.lugar}
+                        </div>
+                        <div class="time">
+                            <i class="material-icons tiny">schedule</i> Guardado: ${fechaLegible}
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn-floating btn-large waves-effect waves-light green" onclick="marcarEncontrado(${item.id})" title="Ya lo he cogido">
+                            <i class="material-icons">check</i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    // Configuración para que funcione como App Móvil
+    function configurarPWA() {
+        const manifestObj = {
+            "name": "Buscador de Cosas",
+            "short_name": "Mis Cosas",
+            "start_url": "./index.html",
+            "display": "standalone",
+            "background_color": "#f0f4f8",
+            "theme_color": "#00897b",
+            "icons": [{
+                "src": "https://cdn-icons-png.flaticon.com/512/2838/2838912.png",
+                "sizes": "512x512",
+                "type": "image/png"
+            }]
+        };
+
+        const manifestBlob = new Blob([JSON.stringify(manifestObj)], {type: 'application/json'});
+        document.getElementById('manifest-placeholder').setAttribute('href', URL.createObjectURL(manifestBlob));
+
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                self.addEventListener('install', e => self.skipWaiting());
+                self.addEventListener('activate', e => self.clients.claim());
+                self.addEventListener('fetch', e => {
+                    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+                });
+            `;
+            const swBlob = new Blob([swCode], {type: 'application/javascript'});
+            navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
+        }
+    }
+</script>
+</body>
+</html>
