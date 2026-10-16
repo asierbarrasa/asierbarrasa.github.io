@@ -1,195 +1,337 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" class="h-full scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo lo que necesitas para sobrevivir de lunes a jueves</title>
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <title>Sobreviviendo de Lunes a Jueves | Utilidades Diarias</title>
 
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#092e5c',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Personalización de detalles finos */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+        }
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.65);
+        }
+        .card-hover-effect {
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .card-hover-effect:hover {
+            transform: translateY(-4px);
+        }
+    </style>
 </head>
 
-<body>
-    <div class="container ">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-full flex flex-col font-sans antialiased selection:bg-sky-500 selection:text-white transition-colors duration-300">
 
-        <div style="margin: 6%;"></div>
+    <!-- Background Pattern -->
+    <div class="fixed inset-0 -z-10 h-full w-full bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] dark:bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-70"></div>
 
-
-     <div class="col s12 m7">
-
-            <div class="card horizontal">
-                <div class="card-stacked">
-                    <h3 class="header center">Lleva al dia tu medicacion</h3>
-                    <div class="card-content">
-                        <p>Lleva al dia tu medicacion con esta sencilla app.</p>
-                    </div>
-                    <div class="card-action">
-                        <a href="medicacion.html" style="color:#039be5">Haz click.</a>
-                    </div>
-                </div>
+    <!-- Header Navigation -->
+    <header class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-4 flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-600 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-sky-500/20 font-bold text-lg">
+                S
             </div>
+            <span class="font-bold text-slate-900 dark:text-white text-lg tracking-tight">Utilidades<span class="text-sky-500">.app</span></span>
         </div>
 
-             <div class="col s12 m7">
+        <div class="flex items-center space-x-3">
+            <!-- Theme Toggle Button -->
+            <button id="themeToggle" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-slate-700 transition-all shadow-sm" aria-label="Cambiar tema">
+                <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+                <i data-lucide="moon" class="w-4 h-4 block dark:hidden"></i>
+            </button>
+            
+            <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/50">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                v2.0.0
+            </span>
+        </div>
+    </header>
 
-            <div class="card horizontal">
-                <div class="card-stacked">
-                    <h3 class="header center">Estoicismo</h3>
-                    <div class="card-content">
-                        <p>Todo el conocimiento de mi psicologo en pequeñas pildoras.</p>
-                    </div>
-                    <div class="card-action">
-                        <a href="/adlerestoico.html" style="color:#039be5">Haz click.</a>
-                    </div>
-                </div>
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
+
+        <!-- Hero Section -->
+        <section class="text-center max-w-3xl mx-auto mb-14">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-sky-200 dark:border-sky-900/60 bg-sky-50 dark:bg-sky-950/40 text-sky-700 dark:text-sky-300 text-xs font-medium mb-6">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                <span>Colección de Micro-Herramientas</span>
             </div>
-        </div>
-               <div class="col s12 m7">
+            
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight sm:leading-tight mb-4">
+                Todo lo que necesitas para sobrevivir de <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-indigo-600">lunes a jueves</span>
+            </h1>
+            
+            <p class="text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto font-normal">
+                Tu suite personal de pequeñas aplicaciones, utilidades inteligentes e ideas ligeras para simplificar la rutina diaria.
+            </p>
+        </section>
 
-            <div class="card horizontal">
-                <div class="card-stacked">
-                    <h3 class="header center">Encontrar</h3>
-                    <div class="card-content">
-                        <p>Anota donde dejaste cadqa cosa para poder volver a encontrarla.</p>
+        <!-- Main Cards Grid -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- Card 1: Medicación -->
+            <a href="medicacion.html" class="group relative flex flex-col justify-between p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900/80 hover:border-sky-500/50 dark:hover:border-sky-500/50 shadow-sm hover:shadow-xl hover:shadow-sky-500/5 card-hover-effect">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-200">
+                        <i data-lucide="pill" class="w-6 h-6"></i>
                     </div>
-                    <div class="card-action">
-                        <a href="/encontrar.html" style="color:#039be5">Haz click.</a>
-                    </div>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors mb-2">
+                        Lleva al día tu medicación
+                    </h2>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Lleva al día tu medicación con esta sencilla app.
+                    </p>
                 </div>
-            </div>
-        </div>
-
-             <div class="col s12 m7">
-
-            <div class="card horizontal">
-                <div class="card-stacked">
-                    <h3 class="header center">Mimimi</h3>
-                    <div class="card-content">
-                        <p>Cambia las vocales por "i" con un solo click y demuestra quien manda en la discusión.</p>
-                    </div>
-                    <div class="card-action">
-                        <a href="mimimi/mimimi.html" style="color:#039be5">Haz click.</a>
-                    </div>
+                <div class="mt-6 flex items-center text-sm font-semibold text-sky-600 dark:text-sky-400 pt-4 border-t border-slate-100 dark:border-slate-800/60">
+                    <span>Abrir aplicación</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 ml-2 group-hover:translate-x-1.5 transition-transform duration-200"></i>
                 </div>
-            </div>
-        </div>
+            </a>
 
-
-        <div class="col s12 m7">
-            <div class="card horizontal">
-
-                <div class="card-stacked">
-                    <h3 class="header center">Cuenta atrás hasta el próximo viernes</h3>
-
-                    <div class="card-content">
-                        <p>¿Cuanto falta para el próximo viernes?</p>
+            <!-- Card 2: Estoicismo -->
+            <a href="/adlerestoico.html" class="group relative flex flex-col justify-between p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900/80 hover:border-indigo-500/50 dark:hover:border-indigo-500/50 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 card-hover-effect">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-200">
+                        <i data-lucide="brain" class="w-6 h-6"></i>
                     </div>
-                    <div class="card-action">
-                        <a href="countDown/countDown.html" style="color:#039be5">Haz click y compruebalo.</a>
-                    </div>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors mb-2">
+                        Estoicismo
+                    </h2>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Todo el conocimiento de mi psicólogo en pequeñas píldoras.
+                    </p>
                 </div>
-            </div>
-        </div>
-
-
-        <div class="col s12 m7">
-
-            <div class="card horizontal">
-                <div class="card-stacked">
-                    <h3 class="header center">Mimimi</h3>
-                    <div class="card-content">
-                        <p>Cambia las vocales por "i" con un solo click y demuestra quien manda en la discusión.</p>
-                    </div>
-                    <div class="card-action">
-                        <a href="mimimi/mimimi.html" style="color:#039be5">Haz click.</a>
-                    </div>
+                <div class="mt-6 flex items-center text-sm font-semibold text-indigo-600 dark:text-indigo-400 pt-4 border-t border-slate-100 dark:border-slate-800/60">
+                    <span>Explorar pildoras</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 ml-2 group-hover:translate-x-1.5 transition-transform duration-200"></i>
                 </div>
-            </div>
-        </div>
+            </a>
 
-
-        <!-- <div class="col s12 m7">
-      <div class="card horizontal">
-        <div class="card-stacked">
-          <h3 class="header center">¿Cuánto falta para el próximo viaje?</h3>
-          <div class="card-content">
-            <p>Cada vez falta menos, comprueba cuento.</p>
-          </div>
-          <div class="card-action">
-            <a href="countDownTravel/countDownTravel.html" style="color:#039be5">Haz click.</a>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
-
-        <!-- Verano comentado -->
-        <!--     <div class="col s12 m7">
-      <div class="card horizontal">
-        <div class="card-stacked">
-          <h3 class="header center">¿Cuánto falta para el veranito?</h3>
-          <div class="card-content">
-            <p>Vete abriendo una cerveza y que no te pille el toro.</p>
-          </div>
-          <div class="card-action">
-            <a href="countDownSummer/countDownSummer.html" style="color:#039be5">Haz click.</a>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
-
-        <!-- <div class="col s12 m7">
-    <div class="card horizontal">
-      <div class="card-stacked">
-        <h3 class="header center">¿Cuánto falta para Navidad?</h3>
-        <div class="card-content">
-          <p>Cada vez falta menos, comprueba cuento.</p>
-        </div>
-        <div class="card-action">
-          <a href="countDownChristmas/countDownChristmas.html" style="color:#039be5">Haz click.</a>
-        </div>
-      </div>
-    </div>
-  </div>
- -->
-
-
-
-        <div class="col s12 m7">
-
-            <div class="card horizontal">
-                <div class="card-stacked">
-                    <h3 class="header center">Nota corte selectividad</h3>
-                    <div class="card-content">
-                        <p>Calcula tu nota media para selectividad.</p>
+            <!-- Card 3: Encontrar -->
+            <a href="/encontrar.html" class="group relative flex flex-col justify-between p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900/80 hover:border-amber-500/50 dark:hover:border-amber-500/50 shadow-sm hover:shadow-xl hover:shadow-amber-500/5 card-hover-effect">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-200">
+                        <i data-lucide="search" class="w-6 h-6"></i>
                     </div>
-                    <div class="card-action">
-                        <a href="sele2021/sele2021.html" style="color:#039be5">Haz click.</a>
-                    </div>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors mb-2">
+                        Encontrar
+                    </h2>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Anota dónde dejaste cada cosa para poder volver a encontrarla.
+                    </p>
                 </div>
+                <div class="mt-6 flex items-center text-sm font-semibold text-amber-600 dark:text-amber-400 pt-4 border-t border-slate-100 dark:border-slate-800/60">
+                    <span>Buscar objetos</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 ml-2 group-hover:translate-x-1.5 transition-transform duration-200"></i>
+                </div>
+            </a>
+
+            <!-- Card 4: Mimimi -->
+            <a href="mimimi/mimimi.html" class="group relative flex flex-col justify-between p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900/80 hover:border-rose-500/50 dark:hover:border-rose-500/50 shadow-sm hover:shadow-xl hover:shadow-rose-500/5 card-hover-effect">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-200">
+                        <i data-lucide="message-square-quote" class="w-6 h-6"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors mb-2">
+                        Mimimi
+                    </h2>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Cambia las vocales por "i" con un solo click y demuestra quién manda en la discusión.
+                    </p>
+                </div>
+                <div class="mt-6 flex items-center text-sm font-semibold text-rose-600 dark:text-rose-400 pt-4 border-t border-slate-100 dark:border-slate-800/60">
+                    <span>Generar mimimi</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 ml-2 group-hover:translate-x-1.5 transition-transform duration-200"></i>
+                </div>
+            </a>
+
+            <!-- Card 5: Cuenta Atrás Viernes -->
+            <a href="countDown/countDown.html" class="group relative flex flex-col justify-between p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900/80 hover:border-emerald-500/50 dark:hover:border-emerald-500/50 shadow-sm hover:shadow-xl hover:shadow-emerald-500/5 card-hover-effect">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-200">
+                        <i data-lucide="clock" class="w-6 h-6"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors mb-2">
+                        Cuenta atrás viernes
+                    </h2>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        ¿Cuánto falta para el próximo viernes? Compruébalo en tiempo real.
+                    </p>
+                </div>
+                <div class="mt-6 flex items-center text-sm font-semibold text-emerald-600 dark:text-emerald-400 pt-4 border-t border-slate-100 dark:border-slate-800/60">
+                    <span>Ver temporizador</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 ml-2 group-hover:translate-x-1.5 transition-transform duration-200"></i>
+                </div>
+            </a>
+
+            <!-- Card 6: Selectividad -->
+            <a href="sele2021/sele2021.html" class="group relative flex flex-col justify-between p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-slate-900/80 hover:border-purple-500/50 dark:hover:border-purple-500/50 shadow-sm hover:shadow-xl hover:shadow-purple-500/5 card-hover-effect">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-200">
+                        <i data-lucide="calculator" class="w-6 h-6"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors mb-2">
+                        Nota corte selectividad
+                    </h2>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Calcula tu nota media de acceso para selectividad de forma precisa.
+                    </p>
+                </div>
+                <div class="mt-6 flex items-center text-sm font-semibold text-purple-600 dark:text-purple-400 pt-4 border-t border-slate-100 dark:border-slate-800/60">
+                    <span>Calcular nota</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 ml-2 group-hover:translate-x-1.5 transition-transform duration-200"></i>
+                </div>
+            </a>
+
+        </section>
+
+        <!-- Optional / Collapsible Section (Cuentas Atrás Especiales) -->
+        <section class="mt-14 pt-8 border-t border-slate-200 dark:border-slate-800">
+            <button id="toggleUpcoming" class="w-full flex items-center justify-between p-4 rounded-xl bg-slate-100/70 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors border border-slate-200/60 dark:border-slate-800/60">
+                <div class="flex items-center space-x-3">
+                    <i data-lucide="calendar-heart" class="w-5 h-5 text-slate-500 dark:text-slate-400"></i>
+                    <span class="font-semibold text-slate-800 dark:text-slate-200 text-sm sm:text-base">Otras Cuentas Atrás / Próximamente</span>
+                    <span class="bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs px-2.5 py-0.5 rounded-full font-medium">3</span>
+                </div>
+                <i id="toggleChevron" data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform duration-300"></i>
+            </button>
+
+            <div id="upcomingContainer" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                
+                <!-- Countdown: Viaje -->
+                <a href="countDownTravel/countDownTravel.html" class="flex items-center p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/40 hover:border-sky-400/50 transition-all group">
+                    <div class="w-10 h-10 rounded-lg bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 flex items-center justify-center mr-3 shrink-0">
+                        <i data-lucide="plane" class="w-5 h-5"></i>
+                    </div>
+                    <div class="overflow-hidden">
+                        <h3 class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-sky-500 transition-colors truncate">Próximo Viaje</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 truncate">Cada vez falta menos, comprueba cuánto.</p>
+                    </div>
+                </a>
+
+                <!-- Countdown: Verano -->
+                <a href="countDownSummer/countDownSummer.html" class="flex items-center p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/40 hover:border-amber-400/50 transition-all group">
+                    <div class="w-10 h-10 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center mr-3 shrink-0">
+                        <i data-lucide="sun-medium" class="w-5 h-5"></i>
+                    </div>
+                    <div class="overflow-hidden">
+                        <h3 class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-amber-500 transition-colors truncate">Veranito</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 truncate">Vete abriendo una cerveza...</p>
+                    </div>
+                </a>
+
+                <!-- Countdown: Navidad -->
+                <a href="countDownChristmas/countDownChristmas.html" class="flex items-center p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/40 hover:border-red-400/50 transition-all group">
+                    <div class="w-10 h-10 rounded-lg bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 flex items-center justify-center mr-3 shrink-0">
+                        <i data-lucide="snowflake" class="w-5 h-5"></i>
+                    </div>
+                    <div class="overflow-hidden">
+                        <h3 class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-red-500 transition-colors truncate">Navidad</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 truncate">Comprueba los días restantes.</p>
+                    </div>
+                </a>
+
             </div>
-        </div>
+        </section>
 
+    </main>
 
-
-
-
-
-
-    </div>
-
-    <footer class="page-footer white container">
-
-        <div class="footer-copyright white">
-            <div class=" ">
-                <div class="right " style="color: black;">V10.0.0</div>
+    <!-- Footer Section -->
+    <footer class="w-full border-t border-slate-200/80 dark:border-slate-800/80 bg-white/50 dark:bg-slate-950/50 backdrop-blur-md mt-auto">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+            <div class="flex items-center space-x-2">
+                <span>© Utilidades Personales</span>
+                <span>•</span>
+                <span>Diseñado para el día a día</span>
+            </div>
+            
+            <div class="flex items-center space-x-4 font-mono text-slate-400 dark:text-slate-500">
+                <span class="bg-slate-100 dark:bg-slate-900 px-2.5 py-1 rounded border border-slate-200 dark:border-slate-800">V10.0.0</span>
             </div>
         </div>
     </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Inicializar iconos de Lucide
+        lucide.createIcons();
+
+        // Lógica de cambio de Modo Claro / Oscuro
+        const themeToggleBtn = document.getElementById('themeToggle');
+        
+        // Comprobar preferencia previa o preferencia del sistema
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', function() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        });
+
+        // Lógica de desplegable para secciones en pausa
+        const toggleBtn = document.getElementById('toggleUpcoming');
+        const upcomingContainer = document.getElementById('upcomingContainer');
+        const toggleChevron = document.getElementById('toggleChevron');
+
+        toggleBtn.addEventListener('click', () => {
+            const isHidden = upcomingContainer.classList.contains('hidden');
+            if (isHidden) {
+                upcomingContainer.classList.remove('hidden');
+                toggleChevron.style.transform = 'rotate(180deg)';
+            } else {
+                upcomingContainer.classList.add('hidden');
+                toggleChevron.style.transform = 'rotate(0deg)';
+            }
+        });
+    </script>
 </body>
 
 </html>
